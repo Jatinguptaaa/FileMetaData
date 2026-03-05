@@ -23,13 +23,12 @@ FILE METADATA ENDPOINT
 */
 // Ensure 'upfile' matches the name attribute in your HTML
 app.post('/api/fileanalyse', upload.single('upfile'), (req, res) => {
-  // Check if file exists in the request
   if (!req.file) {
     return res.status(400).json({ error: "No file uploaded" });
   }
 
-  // Return the specific keys required by Test Case 4
-  res.json({
+  // Explicitly set status 200
+  res.status(200).json({
     name: req.file.originalname,
     type: req.file.mimetype,
     size: req.file.size
