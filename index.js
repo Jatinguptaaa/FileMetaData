@@ -19,7 +19,7 @@ MULTER SETUP
 -------------------------
 */
 
-const upload = multer({ dest: 'uploads/' });
+const upload = multer();
 
 /*
 -------------------------
