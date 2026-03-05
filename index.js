@@ -26,15 +26,16 @@ const upload = multer({ dest: 'uploads/' });
 FILE METADATA ENDPOINT
 -------------------------
 */
-
 app.post('/api/fileanalyse', upload.single('upfile'), (req, res) => {
 
-  const file = req.file;
+  if (!req.file) {
+    return res.json({ error: "No file uploaded" });
+  }
 
   res.json({
-    name: file.originalname,
-    type: file.mimetype,
-    size: file.size
+    name: req.file.originalname,
+    type: req.file.mimetype,
+    size: req.file.size
   });
 
 });
