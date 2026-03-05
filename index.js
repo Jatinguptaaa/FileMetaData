@@ -1,8 +1,11 @@
 var express = require('express');
 var cors = require('cors');
-require('dotenv').config()
-
+require('dotenv').config();
 const multer = require('multer');
+
+// Use memoryStorage to avoid "directory not found" errors
+const storage = multer.memoryStorage();
+const upload = multer({ storage: storage });
 
 var app = express();
 
@@ -15,32 +18,25 @@ app.get('/', function (req, res) {
 
 /*
 -------------------------
-MULTER SETUP
--------------------------
-*/
-
-const upload = multer();
-
-/*
--------------------------
 FILE METADATA ENDPOINT
 -------------------------
 */
+// Ensure 'upfile' matches the name attribute in your HTML
 app.post('/api/fileanalyse', upload.single('upfile'), (req, res) => {
-
+  // Check if file exists in the request
   if (!req.file) {
-    return res.json({ error: "No file uploaded" });
+    return res.status(400).json({ error: "No file uploaded" });
   }
 
+  // Return the specific keys required by Test Case 4
   res.json({
     name: req.file.originalname,
     type: req.file.mimetype,
     size: req.file.size
   });
-
 });
 
 const port = process.env.PORT || 3000;
 app.listen(port, function () {
-  console.log('Your app is listening on port ' + port)
+  console.log('Your app is listening on port ' + port);
 });
